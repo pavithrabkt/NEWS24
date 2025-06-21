@@ -1,33 +1,45 @@
 const apiKey = "6cc718ddda9c843f29174c3fdff03f9f"; 
-const blogContainer = document.getElementById("blog-container");
-const searchField = document.getElementById("search-input");
-const searchButton = document.getElementById("search-button");
+const newsContainer = document.getElementById("newsContainer");
+const searchInput = document.getElementById("searchInput");
+const searchBtn = document.getElementById("searchBtn");
 
-async function fetchRandomNews(){
-    try{
-       const apiUrl = `https://newsapi.org/v2/top-headlines?sources=bbc-news&pageSize=10&apiKey=${apiKey}`;
-       const response = await fetch(apiUrl);
-       const data = await response.json();
-       return data.articles;
+async function fetchNews(query = "India") {
+  const url = `https://gnews.io/api/v4/search?q=${query}&lang=en&token=${apiKey}`;
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    if (!data.articles || data.articles.length === 0) {
+      newsContainer.innerHTML = "<p>No news found.</p>";
+      return;
     }
-    catch(error){
-         console.error("Error fetching random news",error);
-         return [];
-    }
+    displayNews(data.articles);
+  } catch (error) {
+    newsContainer.innerHTML = `<p>Error: ${error.message}</p>`;
+    console.error(error);
+  }
 }
 
-searchButton.addEventListener("click",async ()=>{
-    const query = searchField.value.trim();
-    if(query!=""){
-        try{
-            const articles = await fetchNewsQuery(query);
-            displayBlogs(articles);
-        }
-        catch(error){
-           console.log("Error fetching news by query",error);
-        }
-    }
-})
+function displayNews(articles) {
+  newsContainer.innerHTML = "";
+  articles.forEach((article) => {
+    const div = document.createElement("div");
+    div.classList.add("news-card");
+    div.innerHTML = `
+      <h3>${article.title}</h3>
+      <p>${article.description || "No description available."}</p>
+      <a href="${article.url}" target="_blank">Read more</a>
+    `;
+    newsContainer.appendChild(div);
+  });
+}
+
+searchBtn.addEventListener("click", () => {
+  const query = searchInput.value.trim();
+  if (query) fetchNews(query);
+});
+
+window.addEventListener("load", () => fetchNews());
+
 
 async function fetchNewsQuery(Query)
 {
