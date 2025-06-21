@@ -2,19 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>News24</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <div class="container">
+  <header>
     <h1>📰 News24</h1>
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Search news..." />
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search latest news...">
       <button id="searchBtn">Search</button>
     </div>
-    <div id="newsContainer" class="news-container"></div>
-  </div>
+  </header>
+
+  <main id="newsContainer" class="news-container">
+    <!-- News articles will be injected here -->
+  </main>
+
+  <footer>
+    <p>© 2025 News24. All rights reserved.</p>
+  </footer>
 
   <script src="script.js"></script>
 </body>
